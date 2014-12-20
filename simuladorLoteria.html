@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<title>Simulador Loteria</title>
+    </head>
+<body>
+
+	<h1 id="titulo">Simulador Loteria</h1>
+	
+	<figure>
+		<img id="banner" src="images/sortudo.png" />
+	</figure>
+	
+	<div id="passos">
+		<h3>1º Passo </h3>
+		<p>Clique para sortear os números:</p>
+		<button class="botao" type="submit" value="Sortear Números" id="sortear">Sortear Números</button>
+		
+		<br/><br/>
+		
+		<h3>2º Passo </h3>
+		<p>Clique aqui para informar seus números da sorte:</p>
+		<button class="botao" type="submit" value="Jogar" id="jogar">Jogar</button>
+		
+		<br/><br/>
+	</div>
+	
+		<h3>Resultado: </h3>
+		<input class="caixaResultado" type="text" id="resultado">
+	
+	<script>
+		var numeroSorteadoRandomico = [];
+		var digitados = [];
+		var qtdeTotaisTentativas = 6;
+		var tentativa = 1;
+		var numerosASeremSorteados = 6;
+		var acertos = 0;
+
+		var adicionarSorteadoRandomico = function() {
+			
+			// Confere se os números já foram sorteados
+			if(numeroSorteadoRandomico.length != 0){
+				alert("Números já sorteados, siga para o 2º passo!");
+				return;
+			}
+			
+			// Executa o sorteio
+			for(sorteio = 0; sorteio < numerosASeremSorteados; sorteio++) {
+
+				// Sorteia randomicamente os valores entre 0 e 99
+				var numeroRandomico = Math.round( Math.random() * 99 );
+				
+				// 
+				for(var i = 0; i < numeroSorteadoRandomico.length; i++) {
+					if(numeroSorteadoRandomico[i] == numeroRandomico) {
+						alert("Os números sorteados possuem repetição. Sorteie novamente!");
+						return;				
+					}
+				}
+				
+				numeroSorteadoRandomico.push(numeroRandomico);
+				console.log(numeroSorteadoRandomico);
+			};
+			alert("Números sorteados com sucesso!");
+		}
+
+		var adicionarNumeroManualmente = function() {
+				
+			// Confere se os números já foram sorteados
+			if(digitados.length != 0){
+				alert("Jogo já realizado, recarregue a página e tente novamente!!");
+				return;
+			}
+			
+			for(sorte = 0; sorte < numerosASeremSorteados; sorte++) {
+			
+				var numeroDigitado = prompt("Voce tem " + qtdeTotaisTentativas + " tentativas. "
+											+ "Qual seu número para " + tentativa + "ª tentativa:")
+
+				var digitar = 0;
+				while(digitar < numeroSorteadoRandomico.length) {
+					var qtdeAcertos = 0;
+					if(numeroSorteadoRandomico[digitar] == numeroDigitado) {
+						
+						document.getElementById("resultado").value = ("Parabéns! O número " + numeroDigitado + " foi um dos números sorteados na loteria!");
+
+						acertos++;
+					}
+					digitar++;
+				}
+				
+				qtdeTotaisTentativas--;
+				tentativa++;
+				digitados.push(numeroDigitado);
+				console.log(digitados);
+			};
+			
+			if(acertos != 0){
+				document.getElementById("resultado").value = ("Parabéns! Você conseguiu acertar " + acertos + " número(s).");
+			}	else{
+					document.getElementById("resultado").value = ("Infelizmente você não teve nenhum acerto, recarregue a página e tente novamente!")
+				}
+		}
+
+		var botao = document.getElementById("sortear");
+		botao.onclick = adicionarSorteadoRandomico;
+
+		var botao = document.getElementById("jogar");
+		botao.onclick = adicionarNumeroManualmente;
+	</script>
+</body>
+</html>
